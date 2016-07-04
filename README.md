@@ -7,8 +7,6 @@ Requirements
 
 + python: version 2.7.6
 + sympy: version 1.0 (0.7.4.1 does not work)
-+ numpy: version 1.8.2
-+ joblib (used by algorithm search functions in the *raider* module)
 
 [1] "Fast Algorithms for Convolutional Neural Networks" Lavin and Gray, CVPR 2016.
 http://www.cv-foundation.org/openaccess/content_cvpr_2016/papers/Lavin_Fast_Algorithms_for_CVPR_2016_paper.pdf
