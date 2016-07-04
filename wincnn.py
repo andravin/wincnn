@@ -46,6 +46,8 @@ FractionsInF=3
 def cookToomFilter(a,n,r,fractionsIn=FractionsInG):
     alpha = n+r-1
     f = FdiagPlus1(a,alpha)
+    if f[0,0] < 0:
+        f[0,:] *= -1
     if fractionsIn == FractionsInG:
         AT = A(a,alpha,n).T
         G = (A(a,alpha,r).T/f).T
@@ -85,10 +87,6 @@ def showCookToomFilter(a,n,r,fractionsIn=FractionsInG):
 
     AT,G,BT,f = cookToomFilter(a,n,r,fractionsIn)
 
-    print "AT*((G*g)(BT*d)) ="
-    print filterVerify(n,r,AT,G,BT)
-    print ""
-
     print "AT = "
     pprint(AT)
     print ""
@@ -101,6 +99,12 @@ def showCookToomFilter(a,n,r,fractionsIn=FractionsInG):
     pprint(BT)
     print ""
 
-    print "fractions = "
-    pprint(f)
-    print ""
+    if fractionsIn != FractionsInF:
+        print "AT*((G*g)(BT*d)) ="
+        pprint(filterVerify(n,r,AT,G,BT))
+        print ""
+
+    if fractionsIn == FractionsInF:
+        print "fractions = "
+        pprint(f)
+        print ""
