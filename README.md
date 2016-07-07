@@ -10,9 +10,10 @@ Requirements
 
 ## Example: F(2,3)
 
-In this example we compute transforms for F(2,3) and accuracy of
-F(2x2,3x3) using polynomial interpolation points (0,1,-1). For F(m,r)
-you must select m+r-2 interpolation points.
+For F(m,r) you must select m+r-2 polynomial interpolation points.
+
+In this example we compute transforms for F(2,3) or
+F(2x2,3x3) using polynomial interpolation points (0,1,-1).
 
 ```
 andrew@broadwell:~/develop/wincnn$ python
