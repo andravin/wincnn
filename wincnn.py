@@ -83,6 +83,21 @@ def filterVerify(n, r, AT, G, BT):
 
     return Y
 
+def convolutionVerify(n, r, B, G, A):
+
+    di = IndexedBase('d')
+    gi = IndexedBase('g')
+
+    d = Matrix(n, 1, lambda i,j: di[i])
+    g = Matrix(r, 1, lambda i,j: gi[i])
+
+    V = A*d
+    U = G*g
+    M = U.multiply_elementwise(V)
+    Y = simplify(B*M)
+
+    return Y
+
 def showCookToomFilter(a,n,r,fractionsIn=FractionsInG):
 
     AT,G,BT,f = cookToomFilter(a,n,r,fractionsIn)
@@ -100,8 +115,37 @@ def showCookToomFilter(a,n,r,fractionsIn=FractionsInG):
     print ""
 
     if fractionsIn != FractionsInF:
-        print "AT*((G*g)(BT*d)) ="
+        print "FIR filter: AT*((G*g)(BT*d)) ="
         pprint(filterVerify(n,r,AT,G,BT))
+        print ""
+
+    if fractionsIn == FractionsInF:
+        print "fractions = "
+        pprint(f)
+        print ""
+
+def showCookToomConvolution(a,n,r,fractionsIn=FractionsInG):
+
+    AT,G,BT,f = cookToomFilter(a,n,r,fractionsIn)
+
+    B = BT.transpose()
+    A = AT.transpose()
+    
+    print "A = "
+    pprint(A)
+    print ""
+
+    print "G = "
+    pprint(G)
+    print ""
+
+    print "B = "
+    pprint(B)
+    print ""
+
+    if fractionsIn != FractionsInF:
+        print "Linear Convolution: B*((G*g)(A*d)) ="
+        pprint(convolutionVerify(n,r,B,G,A))
         print ""
 
     if fractionsIn == FractionsInF:
