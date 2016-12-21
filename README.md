@@ -108,6 +108,48 @@ AT*((G*g)(BT*d)) =
 ⎢                                 ⎥
 ⎣d[3]⋅g[0] + d[4]⋅g[1] + d[5]⋅g[2]⎦
 ```
+## Linear Convolution
+
+If instead of an FIR filter you want the algorithm for linear convolution, all you have to do is exchange and transpose the data and inverse transform matrices. This is referred to as the Transfomation Principle.
+
+```
+>>> wincnn.showCookToomConvolution((0,1,-1),2,3)
+A = 
+⎡1  0 ⎤
+⎢     ⎥
+⎢1  1 ⎥
+⎢     ⎥
+⎢1  -1⎥
+⎢     ⎥
+⎣0  1 ⎦
+
+G = 
+⎡ 1    0     0 ⎤
+⎢              ⎥
+⎢1/2  1/2   1/2⎥
+⎢              ⎥
+⎢1/2  -1/2  1/2⎥
+⎢              ⎥
+⎣ 0    0     1 ⎦
+
+B = 
+⎡1   0  0   0 ⎤
+⎢             ⎥
+⎢0   1  -1  -1⎥
+⎢             ⎥
+⎢-1  1  1   0 ⎥
+⎢             ⎥
+⎣0   0  0   1 ⎦
+
+Linear Convolution: B*((G*g)(A*d)) =
+⎡      d[0]⋅g[0]      ⎤
+⎢                     ⎥
+⎢d[0]⋅g[1] + d[1]⋅g[0]⎥
+⎢                     ⎥
+⎢d[0]⋅g[2] + d[1]⋅g[1]⎥
+⎢                     ⎥
+⎣      d[1]⋅g[2]      ⎦
+```
 
 ## Example: F(6,3)
 
