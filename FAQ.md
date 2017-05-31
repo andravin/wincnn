@@ -1,6 +1,6 @@
 # Wincnn FAQ
 
-### How do Winograd's fast conovlution algorithms work?
+### How do Winograd's fast convolution algorithms work?
 
 In a nutshell, Winograd's fast convolution algorithms transform input and filters into another space where convolution becomes element-wise multiplication. The fourier transform also turns convolutions into element-wise multiplications, but uses complex numbers. Complex number multiplication requires 3 real multiplications, and hermitian symmetry in the discrete fourier transform (DFT) of real valued data effectively reduces this to about 1.5 multiplications per input. Winograd minimal algorithms only need 1 real multiplication per input, which is essentially the computational advantage that Winograd convolution has over DFT.
 
