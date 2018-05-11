@@ -14,7 +14,16 @@ Winograd convolution algorithms are a rich subject that has been documented exte
 [2] Richard E Blahut. Fast algorithms for signal processing. Cambridge University Press, 2010.  
 [3] V. Madisetti. The Digital Signal Processing Handbook. Number v. 2 in Electrical engineering handbook series. CRC, 2010.  
 [4] Andrei L Toom. The complexity of a scheme of functional elements realizing the multiplication of integers. In Soviet Mathematics Doklady, volume 3, pages 714–716, 1963.  
-[5] SA Cook. On the minimum computation time for multiplication. Doctoral diss., Harvard U., Cambridge, Mass, 1966.  
+[5] SA Cook. On the minimum computation time for multiplication. Doctoral diss., Harvard U., Cambridge, Mass, 1966.
+
+### What about all of those transform operations? Is the total number of arithmetic operations actually reduced?
+
+Basically the number of multiply-accumulates in the multiplication stage dominates the number of arithmetic operations (additions, multiplications, or multiply-accumulates) in the transform stages, provided that the dimensions of the neural network layer are all large enough.
+
+Example:
+A 3x3 convolutional layer has C input channels and K output channels, and spatial dimensions HxW. The direct algorithm use HWCK9 multiply accumulates. F(4x4, 3x3) uses (H/4)(W/4)CK(36) = HWCK(2.25) multiply accumulates, in addition to (H/4)(W/4)C(144) arithmetic instructions for the data transform, CK(72) for the filter transform, and (H/4)(W/4)K(100) for the inverse transform.
+
+So the reason the number of arithmetic instructions in the transforms do not matter is that the multiplication stage is O(HWCK) while the transforms are O(HWC), O(CK), and O(HWK), respectively. So each of the transforms is less by a factor of K, HW, or C. If all of these dimensions are large, then the amount of arithmetic in the transforms is dominated by the multiplication stage.
 
 ### Can Winograd fast convolution algorithms be used with strided convolutions?
 
