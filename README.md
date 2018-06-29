@@ -25,7 +25,7 @@ Type "help", "copyright", "credits" or "license" for more information.
 AT = 
 ⎡1  1  1   0⎤
 ⎢           ⎥
-⎣0  1  -1  1⎦
+⎣0  1  -1  -1⎦
 
 G = 
 ⎡ 1    0     0 ⎤
@@ -43,7 +43,7 @@ BT =
 ⎢            ⎥
 ⎢0  -1  1   0⎥
 ⎢            ⎥
-⎣0  -1  0   1⎦
+⎣0  1  0   -1⎦
 
 AT*((G*g)(BT*d)) =
 ⎡d[0]⋅g[0] + d[1]⋅g[1] + d[2]⋅g[2]⎤
