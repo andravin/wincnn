@@ -4,7 +4,7 @@
 
 In a nutshell, Winograd's fast convolution algorithms transform input and filters into another space where convolution becomes element-wise multiplication. The fourier transform also turns convolutions into element-wise multiplications, but uses complex numbers. Complex number multiplication requires 3 real multiplications, and hermitian symmetry in the discrete fourier transform (DFT) of real valued data effectively reduces this to about 1.5 multiplications per input. Winograd minimal algorithms only need 1 real multiplication per input, which is essentially the computational advantage that Winograd convolution has over DFT.
 
-It is worth noting that while 3/2 = 1.5 real multiplications per complex multiplication is achieved in theory, 4/2 = 2 is used more often for FFT based CNN acceleration, because the former uses more workspace memory, which might outweight the benefits of reduced mutliplications.
+It is worth noting that while 3/2 = 1.5 real multiplications per complex multiplication is achieved in theory, 4/2 = 2 is used more often for FFT based CNN acceleration, because the former uses more workspace memory, which might outweigh the benefits of reduced mutliplications.
 
 Wincnn generates a subset of the Winograd convolution algorithms that are called modified Cook-Toom algorithms. These use the provably minimal number of multiplications for convolution. Wincnn uses the Lagrange Interpolating Polynomial to transform polynomial multiplication, which is equivalent to convolution, into element-wise multiplication of the values that the polynomials take at a fixed number of interpolation points. The down-side of Cook-Toom algorithms is that the transforms quickly become unstable as the transform size increases. However they are a good match for the small 3x3 convolutions used in convolutional neural networks.
 
@@ -31,7 +31,7 @@ So the reason the number of arithmetic instructions in the transforms do not mat
 
 It is possible to use Winograd or any convolution algorithm with strides > 1 by decimating the input and filter to make un-strided convolutions, then adding the results.
 
-For example:
+For example, separate the input and filter into even and odd components, here labeld 'x' and 'o':
 ```
 xoxoxoxoxox
 *2
@@ -40,13 +40,15 @@ xox
 xxxxxx * xx + ooooo * o
 ```
 
-So a 1D stride 2 convolution can be decomposed into the sum of two un-strided convolutions, each using half of the data and filter elements. You can use a Winograd algorithm on each of the un-strided convolutions.
+So a 1D stride 2 convolution can be decomposed into the sum of two un-strided convolutions, each using just the even or odd elements of the input and filter. You can use a Winograd algorithm on each of the un-strided convolutions.
 
 The same technique can be used with strided 2D convolutions, but then you need a sum of 4 un-strided convolutions.
 
 Any book about fast digital signal processing algorithms will have a chapter on "Decimated Convolution" (ie strided convolution), but they usually only discuss the 1D case.
 
 I probably first became aware of this technique from the following paper by Brosch and Tam, which does use 2D decimation in conjunction with FFT convolution: https://www.researchgate.net/profile/Tom_Brosch/publication/267930193_Efficient_Training_of_Convolutional_Deep_Belief_Networks_in_the_Frequency_Domain_for_Application_to_High-Resolution_2D_and_3D_Images/links/55f05f3d08ae0af8ee1d1904.pdf
+
+A better notation for explaining decimated convolution is the polyphase representation. See for example, chapter 4.3, The Polyphase Representation, p. 120, in "Multirate Systems and Filter Banks" by PP. Vaidyanathan.
 
 ### What about dilated convolutions?
 
