@@ -1,5 +1,7 @@
+from __future__ import print_function
 from sympy import symbols, Matrix, Poly, zeros, eye, Indexed, simplify, IndexedBase, init_printing, pprint
 from operator import mul
+from functools import reduce
 
 def At(a,m,n):
     return Matrix(m, n, lambda i,j: a[i]**j)
@@ -102,27 +104,27 @@ def showCookToomFilter(a,n,r,fractionsIn=FractionsInG):
 
     AT,G,BT,f = cookToomFilter(a,n,r,fractionsIn)
 
-    print "AT = "
+    print ("AT = ")
     pprint(AT)
-    print ""
+    print ("")
 
-    print "G = "
+    print ("G = ")
     pprint(G)
-    print ""
+    print ("")
 
-    print "BT = "
+    print ("BT = ")
     pprint(BT)
-    print ""
+    print ("")
 
     if fractionsIn != FractionsInF:
-        print "FIR filter: AT*((G*g)(BT*d)) ="
+        print ("FIR filter: AT*((G*g)(BT*d)) =")
         pprint(filterVerify(n,r,AT,G,BT))
-        print ""
+        print ("")
 
     if fractionsIn == FractionsInF:
-        print "fractions = "
+        print ("fractions = ")
         pprint(f)
-        print ""
+        print ("")
 
 def showCookToomConvolution(a,n,r,fractionsIn=FractionsInG):
 
@@ -130,25 +132,25 @@ def showCookToomConvolution(a,n,r,fractionsIn=FractionsInG):
 
     B = BT.transpose()
     A = AT.transpose()
-    
-    print "A = "
+
+    print ("A = ")
     pprint(A)
-    print ""
+    print ("")
 
-    print "G = "
+    print ("G = ")
     pprint(G)
-    print ""
+    print ("")
 
-    print "B = "
+    print ("B = ")
     pprint(B)
-    print ""
+    print ("")
 
     if fractionsIn != FractionsInF:
-        print "Linear Convolution: B*((G*g)(A*d)) ="
+        print ("Linear Convolution: B*((G*g)(A*d)) =")
         pprint(convolutionVerify(n,r,B,G,A))
-        print ""
+        print ("")
 
     if fractionsIn == FractionsInF:
-        print "fractions = "
+        print ("fractions = ")
         pprint(f)
-        print ""
+        print ("")
