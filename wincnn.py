@@ -52,12 +52,12 @@ def cookToomFilter(a,n,r,fractionsIn=FractionsInG):
         f[0,:] *= -1
     if fractionsIn == FractionsInG:
         AT = A(a,alpha,n).T
-        G = (A(a,alpha,r).T/f).T
+        G = (A(a,alpha,r).T*f**(-1)).T
         BT = f * B(a,alpha).T
     elif fractionsIn == FractionsInA:
         BT = f * B(a,alpha).T
         G = A(a,alpha,r)
-        AT = (A(a,alpha,n)).T/f
+        AT = (A(a,alpha,n)).T*f**(-1)
     elif fractionsIn == FractionsInB:
         AT = A(a,alpha,n).T
         G = A(a,alpha,r)
