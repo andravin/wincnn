@@ -5,8 +5,8 @@ convolutional neural networks as proposed in [1].
 
 Requirements
 
-+ python: version 2.7.6
-+ sympy: version 1.0 (0.7.4.1 does not work)
++ Python >= 3.8
++ SymPy >= 1.9
 
 ## Example: F(2,3)
 
@@ -16,10 +16,7 @@ In this example we compute transforms for F(2,3) or
 F(2x2,3x3) using polynomial interpolation points (0,1,-1).
 
 ```
-andrew@broadwell:~/develop/wincnn$ python
-Python 2.7.11+ (default, Apr 17 2016, 14:00:29) 
-[GCC 5.3.1 20160413] on linux2
-Type "help", "copyright", "credits" or "license" for more information.
+$ python3
 >>> import wincnn
 >>> wincnn.showCookToomFilter((0,1,-1), 2, 3)
 AT = 
