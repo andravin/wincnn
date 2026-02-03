@@ -1,5 +1,10 @@
 # Changelog
 
+## 2.0.1 — 2026-02-03
+
+- Added project description, author, classifiers, and URLs to PyPI metadata
+- Added pip install instructions to README
+
 ## 2.0.0 — 2026-02-03
 
 - Dropped Python 2 support; requires Python >= 3.8

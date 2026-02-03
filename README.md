@@ -1,5 +1,9 @@
 # wincnn
 
+[![PyPI version](https://img.shields.io/pypi/v/wincnn)](https://pypi.org/project/wincnn/)
+[![Python versions](https://img.shields.io/pypi/pyversions/wincnn)](https://pypi.org/project/wincnn/)
+[![License](https://img.shields.io/pypi/l/wincnn)](https://github.com/andravin/wincnn/blob/master/LICENSE)
+
 A simple python module for computing minimal Winograd convolution algorithms for use with
 convolutional neural networks as proposed in [1].
 

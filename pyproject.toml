@@ -4,11 +4,29 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "wincnn"
-version = "2.0.0"
+version = "2.0.1"
 description = "Compute minimal Winograd convolution algorithms for convolutional neural networks"
 license = {text = "Apache-2.0"}
+readme = "README.md"
 requires-python = ">=3.8"
 dependencies = ["sympy>=1.9"]
+authors = [{name = "Andrew Lavin", email = "alavin@acm.org"}]
+classifiers = [
+    "License :: OSI Approved :: Apache Software License",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Topic :: Scientific/Engineering",
+    "Topic :: Scientific/Engineering :: Mathematics",
+]
+
+[project.urls]
+Homepage = "https://github.com/andravin/wincnn"
+Repository = "https://github.com/andravin/wincnn"
+Changelog = "https://github.com/andravin/wincnn/blob/master/CHANGELOG.md"
 
 [project.optional-dependencies]
 dev = ["pytest"]
