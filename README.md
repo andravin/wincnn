@@ -3,7 +3,13 @@
 A simple python module for computing minimal Winograd convolution algorithms for use with
 convolutional neural networks as proposed in [1].
 
-Requirements
+## Installation
+
+```
+pip install wincnn
+```
+
+### Requirements
 
 + Python >= 3.8
 + SymPy >= 1.9
