@@ -1,4 +1,6 @@
-from sympy import Matrix, Rational, IndexedBase, simplify
+import math
+
+from sympy import Float, Matrix, Number, Rational, IndexedBase, cos, pi, simplify, sqrt
 
 import wincnn
 
@@ -165,3 +167,57 @@ def test_convolution_verify():
     ])
 
     assert simplify(Y - expected) == Matrix([[0], [0], [0], [0]])
+
+
+def test_chebyshev_points_values():
+    """Verify chebyshevPoints returns correct Chebyshev nodes."""
+    pts = wincnn.chebyshevPoints(3)
+    assert len(pts) == 3
+    assert simplify(pts[0] - sqrt(3) / 2) == 0
+    assert simplify(pts[1]) == 0
+    assert simplify(pts[2] + sqrt(3) / 2) == 0
+
+
+def test_chebyshev_points_filter():
+    """Verify Chebyshev points produce a valid F(2,3) filter."""
+    a = wincnn.chebyshevPoints(3)
+    AT, G, BT, f = wincnn.cookToomFilter(a, 2, 3)
+    Y = wincnn.filterVerify(2, 3, AT, G, BT)
+
+    di = IndexedBase("d")
+    gi = IndexedBase("g")
+
+    expected = Matrix([
+        [di[0]*gi[0] + di[1]*gi[1] + di[2]*gi[2]],
+        [di[1]*gi[0] + di[2]*gi[1] + di[3]*gi[2]],
+    ])
+
+    assert simplify(Y - expected) == Matrix([[0], [0]])
+
+
+def test_chebyshev_points_floating_point():
+    """Verify floating-point Chebyshev nodes match double-precision math.cos."""
+    pts = wincnn.chebyshevPoints(5, precision=15)
+    assert len(pts) == 5
+    for k in range(5):
+        expected = math.cos((2 * k + 1) * math.pi / 10)
+        assert isinstance(pts[k], Float)
+        assert abs(float(pts[k]) - expected) < 1e-15
+
+
+def test_cook_toom_filter_floating_point():
+    """Verify precision kwarg produces double-precision transform matrices."""
+    a = wincnn.chebyshevPoints(3)
+    AT, G, BT, f = wincnn.cookToomFilter(a, 2, 3, precision=15)
+
+    # All entries should be numeric (Float or exact Zero/Integer)
+    for mat in (AT, G, BT):
+        for entry in mat:
+            assert isinstance(entry, Number), f"unexpected type {type(entry)}"
+
+    # Verify the transforms are still correct by checking against symbolic result
+    AT_sym, G_sym, BT_sym, _ = wincnn.cookToomFilter(a, 2, 3)
+    for sym, flt in ((AT_sym, AT), (G_sym, G), (BT_sym, BT)):
+        diff = sym - flt
+        for entry in diff:
+            assert abs(float(entry.evalf())) < 1e-14

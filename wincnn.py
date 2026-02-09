@@ -2,10 +2,17 @@ import operator
 from functools import reduce
 from typing import Sequence, Tuple
 
+import math
+
 from sympy import (
+    Float,
     IndexedBase,
     Matrix,
+    N,
     Poly,
+    Rational,
+    cos,
+    pi,
     simplify,
     symbols,
     zeros,
@@ -93,7 +100,11 @@ FractionsInF = 3
 
 
 def cookToomFilter(
-    a: Sequence, n: int, r: int, fractionsIn: int = FractionsInG
+    a: Sequence,
+    n: int,
+    r: int,
+    fractionsIn: int = FractionsInG,
+    precision: int = None,
 ) -> Tuple[Matrix, Matrix, Matrix, Matrix]:
     """Compute the Cook-Toom filter transforms for F(n, r).
 
@@ -113,6 +124,13 @@ def cookToomFilter(
         Controls where rational fractions appear in the transforms.
         One of ``FractionsInG`` (default), ``FractionsInA``,
         ``FractionsInB``, or ``FractionsInF``.
+    precision : int, optional
+        If given, compute the transforms symbolically first for numerical
+        accuracy, then convert all matrix entries to floating-point values
+        with the specified number of significant decimal digits.  Use 3
+        for half precision (float16), 7 for single precision (float32),
+        or 15 for double precision (float64).  Default is ``None``
+        (return exact symbolic matrices).
 
     Returns
     -------
@@ -138,6 +156,11 @@ def cookToomFilter(
         AT = A(a, alpha, n).T
         G = A(a, alpha, r)
         BT = f * B(a, alpha).T
+    if precision is not None:
+        AT = N(simplify(AT), precision)
+        G = N(simplify(G), precision)
+        BT = N(simplify(BT), precision)
+        f = N(simplify(f), precision)
     return (AT, G, BT, f)
 
 
@@ -250,3 +273,42 @@ def showCookToomConvolution(
         print("fractions = ")
         pprint(f)
         print("")
+
+
+def chebyshevPoints(n: int, precision: int = None) -> tuple:
+    """Return *n* Chebyshev nodes of the first kind.
+
+    The Chebyshev nodes are the roots of the degree-*n* Chebyshev polynomial
+    of the first kind, given by ``cos((2*k + 1) * pi / (2*n))`` for
+    ``k = 0, 1, ..., n - 1``.
+
+    These points minimise the maximum interpolation error (Runge phenomenon)
+    and can be passed directly as the interpolation-point sequence *a* to
+    :func:`cookToomFilter` or :func:`showCookToomFilter`.
+
+    Parameters
+    ----------
+    n : int
+        Number of interpolation points to generate.  For an F(m, r)
+        algorithm you need ``n = m + r - 2`` points.
+    precision : int, optional
+        If given, return floating-point values with the specified number
+        of significant decimal digits.  Use 3 for half precision
+        (float16), 7 for single precision (float32), or 15 for double
+        precision (float64).  Default is ``None`` (return exact symbolic
+        expressions).
+
+    Returns
+    -------
+    tuple
+        A tuple of *n* values.  Each value is an exact SymPy ``cos(...)``
+        expression when *precision* is ``None``, or a SymPy ``Float``
+        when *precision* is specified.  Nodes are ordered from ``k = 0``
+        (closest to 1) to ``k = n - 1`` (closest to -1).
+    """
+    if precision is not None:
+        return tuple(
+            Float(math.cos((2 * k + 1) * math.pi / (2 * n)), precision)
+            for k in range(n)
+        )
+    return tuple(cos(Rational(2 * k + 1, 2 * n) * pi) for k in range(n))
