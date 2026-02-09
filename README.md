@@ -231,5 +231,22 @@ AT*((G*g)(BT*d)) =
 ⎣d[5]⋅g[0] + d[6]⋅g[1] + d[7]⋅g[2]⎦
 ```
 
+## Citing wincnn
+
+If you use wincnn in your research, please cite the software:
+
+```bibtex
+@software{lavin_wincnn,
+  author       = {Lavin, Andrew},
+  title        = {wincnn},
+  year         = {2016},
+  version      = {2.0.1},
+  url          = {https://github.com/andravin/wincnn},
+  license      = {Apache-2.0}
+}
+```
+
+## Reference
+
 [1] "Fast Algorithms for Convolutional Neural Networks" Lavin and Gray, CVPR 2016.
 http://www.cv-foundation.org/openaccess/content_cvpr_2016/papers/Lavin_Fast_Algorithms_for_CVPR_2016_paper.pdf
