@@ -6,6 +6,7 @@ from sympy import (
     IndexedBase,
     Matrix,
     Poly,
+    S,
     simplify,
     symbols,
     zeros,
@@ -38,7 +39,7 @@ def Lx(a, n):
             reduce(
                 operator.mul,
                 ((x - a[k] if k != i else 1) for k in range(0, n)),
-                1,
+                S.One,
             ).expand(basic=True),
             x,
         ).as_expr(),
