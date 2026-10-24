@@ -165,3 +165,18 @@ def test_convolution_verify():
     ])
 
     assert simplify(Y - expected) == Matrix([[0], [0], [0], [0]])
+
+
+def test_single_interpolation_point_filter_shapes():
+    """A single interpolation point has a constant Lagrange basis polynomial."""
+    di = IndexedBase("d")
+    gi = IndexedBase("g")
+
+    cases = [
+        (1, 2, Matrix([[di[0] * gi[0] + di[1] * gi[1]]])),
+        (2, 1, Matrix([[di[0] * gi[0]], [di[1] * gi[0]]])),
+    ]
+    for n, r, expected in cases:
+        AT, G, BT, f = wincnn.cookToomFilter((0,), n, r)
+        actual = wincnn.filterVerify(n, r, AT, G, BT)
+        assert simplify(actual - expected) == Matrix.zeros(n, 1)
